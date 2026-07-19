@@ -1,0 +1,16 @@
+services:
+  redis:
+    image: redis:8
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass 090224T@n
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight:/data
+
+volumes:
+  redisinsight:

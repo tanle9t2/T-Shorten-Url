@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: t-shorten-url
+  mongodb:
+    uri: mongodb://tanle92:090224Tan@localhost:27017/t-shorten-url?authSource=admin
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 3s
+
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 2
+      password: 090224T@n
+worker:
+  id: 1
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.mongodb.driver.protocol.command: DEBUG

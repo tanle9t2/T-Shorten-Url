@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Document(collection = "short_url")
@@ -27,6 +28,6 @@ public class ShortUrl {
 
     @Indexed
     private String userId;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

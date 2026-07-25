@@ -44,6 +44,17 @@ public class ShortUrlCacheServiceImpl implements ShortUrlCacheService {
                         Duration.ofHours(24).plus(Duration.ofMinutes(new Random().nextInt(5))));
     }
 
+    @Override
+    public void invalidCache(String code) {
+        redisTemplate.delete(formatKey(code));
+    }
+
+    @Override
+    public void increaseTotalView(String code) {
+        redisTemplate.opsForValue()
+                .increment(String.format("click:%s", code));
+    }
+
     private String formatKey(String code) {
         return String.format("%s:%s", PREFIX, code);
     }

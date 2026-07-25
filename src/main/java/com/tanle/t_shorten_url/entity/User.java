@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Document(collection = "user")
@@ -23,6 +24,6 @@ public class User {
     private String firstName;
     private String lastName;
 
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

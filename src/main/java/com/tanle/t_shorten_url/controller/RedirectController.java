@@ -1,6 +1,8 @@
 package com.tanle.t_shorten_url.controller;
 
+import com.tanle.t_shorten_url.request.ShortUrlRequest;
 import com.tanle.t_shorten_url.service.ShortUrlService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,9 @@ public class RedirectController {
     private final ShortUrlService shortUrlService;
 
     @GetMapping("/{shortCode}")
-    public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortCode) {
-        String originalUrl = shortUrlService.findRedirectUrl(shortCode);
+    public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortCode
+            , HttpServletRequest request) throws InterruptedException {
+        String originalUrl = shortUrlService.findRedirectUrl(shortCode, request);
 
         return ResponseEntity
                 .status(HttpStatus.FOUND)

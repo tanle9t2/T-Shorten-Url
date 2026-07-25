@@ -8,4 +8,8 @@ public interface ShortUrlCacheService {
     void cacheNotFound(String code);
 
     void createShortUrl(String code, String originalUrl);
+
+    void invalidCache(String code);
+
+    void increaseTotalView(String code);
 }

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Document(collection = "short_analyzed")
@@ -21,8 +22,8 @@ public class ShortAnalyzed {
     private String id;
 
     @Indexed
-    private String shortUrlId;
-    
+    private String shortCode;
+
     private String userId;
 
     private String ipAddress;
@@ -32,5 +33,5 @@ public class ShortAnalyzed {
     private String os;
     private String browser;
 
-    private ZonedDateTime createdAt;
+    private Instant createdAt;
 }

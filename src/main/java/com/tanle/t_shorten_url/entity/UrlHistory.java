@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Document(collection = "url_history")
@@ -23,5 +24,5 @@ public class UrlHistory {
 
     private String urlShortId;
     private String userId;
-    private ZonedDateTime createdAt;
+    private Instant createdAt;
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ShortAnalyzedRepository extends MongoRepository<ShortAnalyzed, String> {
-    List<ShortAnalyzed> findByShortUrlId(String shortUrlId);
+    List<ShortAnalyzed> findByShortCode(String shortCode);
 }

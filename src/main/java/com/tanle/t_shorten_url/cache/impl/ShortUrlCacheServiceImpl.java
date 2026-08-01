@@ -2,12 +2,12 @@ package com.tanle.t_shorten_url.cache.impl;
 
 import com.tanle.t_shorten_url.cache.ShortUrlCacheService;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -17,6 +17,8 @@ import java.util.Random;
 public class ShortUrlCacheServiceImpl implements ShortUrlCacheService {
     private final StringRedisTemplate redisTemplate;
     private final String PREFIX = "url";
+    private final String VIEWS_KEY = "analytics:view";
+    private final String VIEWS_KEY_FLUSHING = "analytics:view:flushing";
 
     @Override
     public Optional<String> getShortUrl(String code) {
@@ -51,8 +53,35 @@ public class ShortUrlCacheServiceImpl implements ShortUrlCacheService {
 
     @Override
     public void increaseTotalView(String code) {
-        redisTemplate.opsForValue()
-                .increment(String.format("click:%s", code));
+        redisTemplate.opsForHash()
+                .increment(VIEWS_KEY,
+                        code, 1);
+    }
+
+    @Override
+    public Long getView(String code) {
+        Object value = redisTemplate.opsForHash()
+                .get(VIEWS_KEY, code);
+
+        if (value == null) return 0L;
+
+        return Long.parseLong(value.toString());
+    }
+
+    @Override
+    public Map<Object, Object> getViewToFlush() {
+        Map<Object, Object> counters =
+                redisTemplate.opsForHash()
+                        .entries("analytics:view");
+        //Avoid during flushing, new request come and counter was read
+        //Rename to new request will automatically create new hash
+        redisTemplate.rename(VIEWS_KEY, VIEWS_KEY_FLUSHING);
+        return counters;
+    }
+
+    @Override
+    public void deleteFlushingView() {
+        redisTemplate.delete(VIEWS_KEY_FLUSHING);
     }
 
     private String formatKey(String code) {

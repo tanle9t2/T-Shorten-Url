@@ -32,7 +32,6 @@ public class ShortAnalyzedServiceImpl implements ShortAnalyzedService {
     }
 
     @Override
-    @Transactional
     public void analyzeShortUrl(ClickEvent clickEvent) {
         log.info("Creating analytics info for shortUrlId: {}", clickEvent.shortCode());
         ShortAnalyzed shortAnalyzed = shortAnalyzedMapper.convertToEntity(clickEvent);

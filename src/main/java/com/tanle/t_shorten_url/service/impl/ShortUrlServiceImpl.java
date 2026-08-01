@@ -7,11 +7,13 @@ import com.tanle.t_shorten_url.event.ClickEvent;
 import com.tanle.t_shorten_url.exception.ResourceNotFoundExeption;
 import com.tanle.t_shorten_url.kafka.ShortUrlProducer;
 import com.tanle.t_shorten_url.mapper.ShortUrlMapper;
+import com.tanle.t_shorten_url.projection.TotalViewProjection;
 import com.tanle.t_shorten_url.repository.ShortUrlRepository;
 import com.tanle.t_shorten_url.request.ShortUrlCreatedRequest;
 import com.tanle.t_shorten_url.request.ShortUrlRequest;
 import com.tanle.t_shorten_url.request.ShortUrlUpdateRequest;
 import com.tanle.t_shorten_url.response.ShortUrlResponse;
+import com.tanle.t_shorten_url.response.TotalViewUrlResponse;
 import com.tanle.t_shorten_url.service.ShortUrlService;
 import com.tanle.t_shorten_url.util.ShortCodeGenerator;
 import com.tanle.t_shorten_url.util.SnowflakeIdGenerator;
@@ -145,7 +147,6 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     }
 
     @Override
-    @Transactional
     public String save(ShortUrlCreatedRequest shortUrl) {
         log.info("Saving ShortUrl: {}", shortUrl.getOriginalUrl());
 
@@ -164,7 +165,18 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     }
 
     @Override
-    @Transactional
+    public TotalViewUrlResponse getTotalView(String code) {
+        TotalViewProjection totalViewProjection = shortUrlRepository.findTotalViews(code)
+                .orElseThrow(() -> new ResourceNotFoundExeption("Not found " + code));
+
+        Long redisCounter = this.shortUrlCacheService.getView(code);
+        TotalViewUrlResponse totalViewUrlResponse = this.shortUrlMapper.convertTotalView(totalViewProjection);
+        totalViewUrlResponse.setViews(totalViewUrlResponse.getViews() + redisCounter);
+
+        return totalViewUrlResponse;
+    }
+
+    @Override
     public void updateShortUrl(ShortUrlUpdateRequest shortUrl) {
         log.info("Update ShortUrl: {}", shortUrl.getOriginalUrl());
         ShortUrl shortUrlEntity = shortUrlRepository.findById(shortUrl.getId())

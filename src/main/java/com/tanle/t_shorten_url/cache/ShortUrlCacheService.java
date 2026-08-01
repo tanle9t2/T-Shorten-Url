@@ -1,5 +1,6 @@
 package com.tanle.t_shorten_url.cache;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface ShortUrlCacheService {
@@ -12,4 +13,10 @@ public interface ShortUrlCacheService {
     void invalidCache(String code);
 
     void increaseTotalView(String code);
+
+    Long getView(String code);
+
+    Map<Object, Object> getViewToFlush();
+
+    void deleteFlushingView();
 }

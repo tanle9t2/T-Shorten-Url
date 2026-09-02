@@ -6,9 +6,11 @@ import lombok.Data;
 import java.time.Instant;
 
 @Builder
-public record ClickEvent(String shortCode,
-                         Instant createdAt,
-                         String ipAddress,
-                         String userAgent,
-                         String referer) {
+public record ClickEvent(
+        String eventId,
+        String shortCode,
+        Instant createdAt,
+        String ipAddress,
+        String userAgent,
+        String referer) {
 }

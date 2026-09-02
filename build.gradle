@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+    implementation platform('software.amazon.awssdk:bom:2.21.29')
+    implementation 'software.amazon.awssdk:s3'
     implementation 'org.mapstruct:mapstruct:1.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
@@ -29,6 +31,14 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:javase:3.5.3'
+    // Source: https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-core
+    implementation 'com.bucket4j:bucket4j_jdk17-core:8.14.0'
+    // Source: https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-lettuce
+    implementation 'com.bucket4j:bucket4j_jdk17-lettuce:8.14.0'
+    // Source: https://mvnrepository.com/artifact/com.bucket4j/bucket4j_jdk17-redis-common
+    implementation 'com.bucket4j:bucket4j_jdk17-redis-common:8.14.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'

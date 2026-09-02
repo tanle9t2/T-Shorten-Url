@@ -38,6 +38,19 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException exception) {
+        ExceptionResponse response = ExceptionResponse.builder()
+                .type("/exception/" + exception.getClass().getSimpleName())
+                .title("Resource not found")
+                .detail(exception.getMessage())
+                .timeStamp(System.currentTimeMillis())
+                .status(HttpStatus.NOT_FOUND.value())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ExceptionResponse> handleUnauthorized(UnauthorizedException exception) {
         ExceptionResponse response = ExceptionResponse.builder()
                 .type("/exception/" + exception.getClass().getSimpleName())

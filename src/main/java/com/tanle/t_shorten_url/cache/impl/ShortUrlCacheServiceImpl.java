@@ -75,9 +75,12 @@ public class ShortUrlCacheServiceImpl implements ShortUrlCacheService {
                         .entries("analytics:view");
         //Avoid during flushing, new request come and counter was read
         //Rename to new request will automatically create new hash
-        redisTemplate.rename(VIEWS_KEY, VIEWS_KEY_FLUSHING);
+        if (counters != null && !counters.isEmpty())
+            redisTemplate.rename(VIEWS_KEY, VIEWS_KEY_FLUSHING);
+
         return counters;
     }
+
 
     @Override
     public void deleteFlushingView() {

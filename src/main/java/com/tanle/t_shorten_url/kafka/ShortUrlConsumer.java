@@ -32,6 +32,7 @@ public class ShortUrlConsumer {
             this.shortUrlCacheService.increaseTotalView(event.shortCode());
 
             log.info("Consume clickEvent {}", event.shortCode());
+            throw new RuntimeException("Test");
         }
     }
 }

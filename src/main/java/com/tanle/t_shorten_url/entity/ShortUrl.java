@@ -25,7 +25,8 @@ public class ShortUrl {
     @Indexed(unique = true)
     private String shortCode;
     private Long views;
-
+    private String qrCode;
+    private boolean isActive;
     @Indexed
     private String userId;
     private Instant createdAt;

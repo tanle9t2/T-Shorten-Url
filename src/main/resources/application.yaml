@@ -23,6 +23,8 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: clickEvent:com.tanle.t_shorten_url.event.ClickEvent
+        linger.ms: 10
+        batch.size: 102400
 
     consumer:
       group-id: analyzed-group
@@ -32,6 +34,7 @@ spring:
         spring.json.trusted.packages: "*"
         spring.json.type.mapping: clickEvent:com.tanle.t_shorten_url.event.ClickEvent
       auto-offset-reset: latest
+      fetch-min-size: 100
 
 worker:
   id: 1
@@ -40,7 +43,23 @@ logging:
   level:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
     org.mongodb.driver.protocol.command: DEBUG
+    org.apache.kafka.clients.producer: DEBUG
 
 app:
+  domain: http://localhost:8080
   kafka:
     short-analyzed-topic: short-analyzed-topic
+
+aws:
+  s3:
+    bucketName: ${S3_BUCKETNAME}
+  region: ${AWS_REGION}
+  credentials:
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics

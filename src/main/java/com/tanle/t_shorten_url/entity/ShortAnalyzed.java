@@ -33,5 +33,7 @@ public class ShortAnalyzed {
     private String os;
     private String browser;
 
+    @Indexed(unique = true)
+    private String eventId;
     private Instant createdAt;
 }

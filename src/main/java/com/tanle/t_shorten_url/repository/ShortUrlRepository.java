@@ -27,5 +27,8 @@ public interface ShortUrlRepository extends MongoRepository<ShortUrl, String> {
     List<ShortUrl> findByShortCodeIn(Set<String> shortCodes);
 
     @Query("{ 'userId' : ?0, 'isActive' : true }")
+    List<ShortUrl> findAllByUserId(String userId);
+
+    @Query("{ 'userId' : ?0, 'isActive' : true }")
     Page<ShortUrl> findByUserId(String userId, Pageable pageable);
 }

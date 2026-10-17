@@ -64,6 +64,19 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleInvalidRange(InvalidRangeException exception) {
+        ExceptionResponse response = ExceptionResponse.builder()
+                .type("/exception/" + exception.getClass().getSimpleName())
+                .title("Invalid analytics range")
+                .detail(exception.getMessage())
+                .timeStamp(System.currentTimeMillis())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ExceptionResponse> globalExceptionHandler(Exception ex) {
         ExceptionResponse message = ExceptionResponse.builder()
                 .type("Excetion")

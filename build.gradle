@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation platform('software.amazon.awssdk:bom:2.21.29')
     implementation 'software.amazon.awssdk:s3'
+    implementation 'software.amazon.awssdk:apache-client'
     implementation 'org.mapstruct:mapstruct:1.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'

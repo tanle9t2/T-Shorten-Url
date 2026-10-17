@@ -1,0 +1,25 @@
+# Tasks: Analytics endpoint
+
+- [x] T1 Publisher sets `ClickEvent.userId` to `"anonymous"` (TD-001, owner unknown until login)
+  - Acceptance: stored `ShortAnalyzed.userId` is `anonymous` after a click; debt recorded in `specs/TECH-DEBT.md`.
+  - Verify: compile; click once and check Mongo.
+  - Files: `ClickEvent`, `AppConstant`, `ShortUrlServiceImpl`
+- [x] T1b Compound index `short_analyzed(shortCode, createdAt)`
+  - Acceptance: index present on startup.
+  - Files: `ShortAnalyzed`
+- [x] T2 Range parsing and bucketing (pure logic)
+  - Acceptance: presets 7/30/90 default 30; custom range validation (from<=to, not future, <=365 days); previous range; weekly buckets above 90 days; zero-filled keys.
+  - Verify: `./gradlew test --tests "*AnalyticsRangeTest"`
+  - Files: `util/AnalyticsRange` (new), test
+- [x] T3 Repository aggregations
+  - Acceptance: returns clicks per bucket, clicks per shortCode, links created per bucket for current and previous range, in the requested tz.
+  - Verify: test with embedded/test Mongo, else mocked `MongoTemplate`.
+  - Files: `repository/AnalyticsRepository` (new)
+- [x] T4 `AnalyticsService` + response records
+  - Acceptance: matches JSON contract in spec; zero division yields 0; empty account returns zeros and `topLinks: []`.
+  - Verify: `./gradlew test --tests "*AnalyticsServiceTest"`
+  - Files: `service/AnalyticsService`, `service/impl`, `response/Analytics*`
+- [x] T5 `AnalyticsController`
+  - Acceptance: `GET /api/v1/analytics?userId=anonymous&period=7&tz=...` returns 200 with 7 buckets; invalid params return 400.
+  - Verify: MockMvc test + `curl` against `bootRun`.
+  - Files: `controller/AnalyticsController`, test

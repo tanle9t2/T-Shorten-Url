@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn dev)",
+      "Bash(yarn build)",
+      "Bash(yarn lint)",
+      "Bash(yarn preview)",
+      "Bash(yarn add*)",
+      "Bash(yarn remove*)",
+      "Bash(npx*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch*)",
+      "Bash(git checkout*)",
+      "Bash(git stash*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git merge*)",
+      "Bash(git rebase*)",
+      "Bash(gh pr*)",
+      "Bash(gh issue*)",
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "mcp__chrome-devtools__*"
+    ],
+    "deny": []
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true
+  }
+}

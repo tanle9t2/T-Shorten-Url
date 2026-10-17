@@ -4,6 +4,7 @@ import com.tanle.t_shorten_url.cache.DistributeLockService;
 import com.tanle.t_shorten_url.cache.ShortUrlCacheService;
 import com.tanle.t_shorten_url.entity.ShortUrl;
 import com.tanle.t_shorten_url.event.ClickEvent;
+import com.tanle.t_shorten_url.util.AppConstant;
 import com.tanle.t_shorten_url.exception.ResourceNotFoundException;
 import com.tanle.t_shorten_url.kafka.ShortUrlProducer;
 import com.tanle.t_shorten_url.mapper.ShortUrlMapper;
@@ -154,11 +155,12 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     private void publishMessage(String code, HttpServletRequest request) {
         String ipAddress = request.getRemoteAddr();
         String userAgent = request.getHeader("User-Agent");
-        String referer = Optional.ofNullable(request.getHeader("Referer")).orElse("Unknow");
+        String referer = Optional.ofNullable(request.getHeader("Referer")).orElse(AppConstant.NO_REFERER);
 
         ClickEvent clickEvent = ClickEvent.builder()
                 .eventId(UUID.randomUUID().toString())
                 .shortCode(code)
+                .userId(AppConstant.ANONYMOUS_USER_ID)
                 .ipAddress(ipAddress)
                 .createdAt(Instant.now())
                 .userAgent(userAgent)
@@ -186,7 +188,7 @@ public class ShortUrlServiceImpl implements ShortUrlService {
                 .shortCode(code)
                 .createdAt(Instant.now())
                 .updatedAt(Instant.now())
-                .userId("1")
+                .userId(AppConstant.ANONYMOUS_USER_ID)
                 .isActive(true)
                 .build();
         if (shortUrl.isWithQRCode()) {

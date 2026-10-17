@@ -43,7 +43,7 @@ public class ShortUrlController {
 
     @GetMapping("/short-urls")
     public ResponseEntity<PageResponse> getShortUrlsByUserId(
-            @RequestParam(required = false) String userId,
+            @RequestParam(required = false, defaultValue = AppConstant.ANONYMOUS_USER_ID) String userId,
             @RequestParam(defaultValue = AppConstant.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(defaultValue = AppConstant.DEFAULT_PAGE_SIZE) int size,
             @RequestParam(defaultValue = AppConstant.DEFAULT_SORT_BY) String sortBy,

@@ -9,6 +9,7 @@ import java.time.Instant;
 public record ClickEvent(
         String eventId,
         String shortCode,
+        String userId,
         Instant createdAt,
         String ipAddress,
         String userAgent,

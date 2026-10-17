@@ -1,0 +1,27 @@
+# Tasks: Per-shortCode statistics
+
+- [x] T1 Resolve link + owner check
+  - Acceptance: unknown code or code owned by another `userId` -> `ResourceNotFoundException` (404); soft-deleted behaves like the list endpoint.
+  - Verify: service unit test with mocked `ShortUrlRepository`.
+  - Files: `ShortUrlRepository` (finder if missing), `AnalyticsServiceImpl`
+- [x] T2 `UserAgentClassifier`
+  - Acceptance: classifies Chrome/Edge/Firefox/Safari/Opera and Windows/macOS/Linux/Android/iOS; Edge and Opera checked before Chrome, Chrome before Safari; null/blank/unknown -> `Unknown`/`Other`.
+  - Verify: `./gradlew test --tests "*UserAgentClassifierTest"` with real UA strings.
+  - Files: `util/UserAgentClassifier` (new), test
+- [x] T3 Repository aggregation
+  - Acceptance: for one `shortCode` returns per-day counts (previous + current range, tz-aware) and current-range counts grouped by `userAgent`, `referer`, `country`.
+  - Verify: mocked `MongoTemplate` test, plus manual check against local Mongo.
+  - Files: `repository/AnalyticsRepository`
+- [x] T4 Service + response record
+  - Acceptance: matches spec JSON; zero-filled `clickSeries`; previous total; top-5 + `Other`; `Unknown`/`direct` mapping (incl. `"Unknow"` sentinel); referer reduced to host; share 0 on zero total; breakdowns sum to `current.totalClicks`.
+  - Verify: `./gradlew test --tests "*ShortCodeAnalyticsServiceTest"`
+  - Files: `response/ShortCodeAnalyticsResponse` (new), `service/AnalyticsService`, `service/impl/AnalyticsServiceImpl`, test
+- [x] T5 Controller mapping
+  - Acceptance: `GET /api/v1/short-url/{code}/analytics?period=7&tz=...` -> 200 with 7 buckets; bad params -> 400; unknown code -> 404; not intercepted by `RedirectController`.
+  - Verify: MockMvc test + `curl` against `bootRun`.
+  - Files: `controller/AnalyticsController`, test
+- [x] T6 Docs + tech debt
+  - Acceptance: TD-003 (coarse UA parsing at read time) and TD-004 (country needs GeoIP at ingest) in `specs/TECH-DEBT.md`; spec status updated.
+  - Files: `specs/TECH-DEBT.md`, `specs/002-shortcode-statistics/spec.md`
+- [x] T7 Review
+  - Acceptance: `code-reviewer` subagent run on the diff; findings fixed or reported (CLAUDE.md workflow).
